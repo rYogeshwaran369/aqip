@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQI Prediction</title>
+</head>
+<body>
+    <h1>Air Quality Index (AQI) Prediction</h1>
+    <form id="prediction-form">
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" /><br>
+
+        <label for="pm25">PM2.5:</label>
+        <input type="number" id="pm25" name="pm25" /><br>
+
+        <label for="pm10">PM10:</label>
+        <input type="number" id="pm10" name="pm10" /><br>
+
+        <label for="no">NO:</label>
+        <input type="number" id="no" name="no" /><br>
+
+        <label for="no2">NO2:</label>
+        <input type="number" id="no2" name="no2" /><br>
+
+        <label for="nox">NOx:</label>
+        <input type="number" id="nox" name="nox" /><br>
+
+        <label for="nh3">NH3:</label>
+        <input type="number" id="nh3" name="nh3" /><br>
+
+        <label for="co">CO:</label>
+        <input type="number" id="co" name="co" /><br>
+
+        <label for="so2">SO2:</label>
+        <input type="number" id="so2" name="so2" /><br>
+
+        <label for="o3">O3:</label>
+        <input type="number" id="o3" name="o3" /><br>
+
+        <label for="benzene">Benzene:</label>
+        <input type="number" id="benzene" name="benzene" /><br>
+
+        <label for="toluene">Toluene:</label>
+        <input type="number" id="toluene" name="toluene" /><br>
+
+        <label for="xylene">Xylene:</label>
+        <input type="number" id="xylene" name="xylene" /><br>
+
+        <button type="button" onclick="predictAQI()">Predict AQI</button>
+    </form>
+
+    <p>Predicted AQI: <span id="predicted-aqi"></span></p>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        function predictAQI() {
+            // Get input values from the form
+            const city = document.getElementById("city").value;
+            const pm25 = parseFloat(document.getElementById("pm25").value);
+            const pm10 = parseFloat(document.getElementById("pm10").value);
+            const no = parseFloat(document.getElementById("no").value);
+            const no2 = parseFloat(document.getElementById("no2").value);
+            const nox = parseFloat(document.getElementById("nox").value);
+            const nh3 = parseFloat(document.getElementById("nh3").value);
+            const co = parseFloat(document.getElementById("co").value);
+            const so2 = parseFloat(document.getElementById("so2").value);
+            const o3 = parseFloat(document.getElementById("o3").value);
+            const benzene = parseFloat(document.getElementById("benzene").value);
+            const toluene = parseFloat(document.getElementById("toluene").value);
+            const xylene = parseFloat(document.getElementById("xylene").value);
+
+            // Prepare the data as an object
+            const inputData = {
+                "input": [city, pm25, pm10, no, no2, nox, nh3, co, so2, o3, benzene, toluene, xylene]
+            };
+
+            // Make an AJAX request to your Flask API
+            axios.post('https://ryogeshwaran369.github.io/aqip/predict_aqi', inputData, {
+    headers: {
+        'Content-Type': 'application/json',
+    }
+})
+.then(response => {
+    const predictedAQI = response.data.prediction;
+    console.log(response)
+    document.getElementById("predicted-aqi").textContent = predictedAQI;
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+
+        }
+    </script>
+</body>
+</html>
